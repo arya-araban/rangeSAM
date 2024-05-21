@@ -105,7 +105,7 @@ def lidar_callback(point_cloud, point_list):
     point_list.colors = o3d.utility.Vector3dVector(int_color)
 
 
-def semantic_lidar_callback(point_cloud, point_list):
+def semantic_lidar_callback(point_cloud, point_list,actor_colors):
     """Prepares a point cloud with semantic segmentation
     colors ready to be consumed by Open3D"""
     data = np.frombuffer(point_cloud.raw_data, dtype=np.dtype([
@@ -116,12 +116,20 @@ def semantic_lidar_callback(point_cloud, point_list):
     # what we see in Unreal since Open3D uses a right-handed coordinate system
     points = np.array([data['x'], -data['y'], data['z']]).T
 
+
     # # An example of adding some noise to our data if needed:
     # points += np.random.uniform(-0.05, 0.05, size=points.shape)
 
     # Colorize the pointcloud based on the CityScapes color palette
     labels = np.array(data['ObjTag'])
     int_color = LABEL_COLORS[labels]
+
+
+    # Assign unique colors based on actor ID
+    for actor_id, color in actor_colors.items():
+        mask = (labels == 13) | (labels == 14) | (labels == 15) | (labels == 16) | (labels == 17) | (labels == 18)
+        int_color[mask & (data['ObjIdx'] == actor_id)] = color
+
 
     # Filter out points with the color (0.0, 0.0, 0.0) which correspond to object we don't want in pointcloud.
     mask = ~np.all(int_color == [0.0, 0.0, 0.0], axis=1)
@@ -183,6 +191,20 @@ def main(arg):
     client.set_timeout(2.0)
     world = client.get_world()
 
+     # Get the list of actors in the scene
+    actors = world.get_actors()
+    # print(actors)
+
+    # Create a dictionary to store unique colors for each actor ID
+    actor_colors = {}
+
+    # Assign unique colors to each actor ID
+    for actor in actors:
+        if 'vehicle' in actor.type_id or 'walker' in actor.type_id:
+            actor_id = actor.id
+            if actor_id not in actor_colors:
+                actor_colors[actor_id] = np.random.random(3)
+
     try:
         original_settings = world.get_settings()
         settings = world.get_settings()
@@ -211,7 +233,7 @@ def main(arg):
 
         point_list = o3d.geometry.PointCloud()
         if arg.semantic:
-            lidar.listen(lambda data: semantic_lidar_callback(data, point_list))
+            lidar.listen(lambda data: semantic_lidar_callback(data, point_list, actor_colors))
         else:
             lidar.listen(lambda data: lidar_callback(data, point_list))
 
