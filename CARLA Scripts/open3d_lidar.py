@@ -105,7 +105,7 @@ def lidar_callback(point_cloud, point_list):
     point_list.colors = o3d.utility.Vector3dVector(int_color)
 
 
-def semantic_lidar_callback(point_cloud, point_list,actor_colors):
+def semantic_lidar_callback(point_cloud, point_list, actor_colors):
     """Prepares a point cloud with semantic segmentation
     colors ready to be consumed by Open3D"""
     data = np.frombuffer(point_cloud.raw_data, dtype=np.dtype([
@@ -121,14 +121,14 @@ def semantic_lidar_callback(point_cloud, point_list,actor_colors):
     # points += np.random.uniform(-0.05, 0.05, size=points.shape)
 
     # Colorize the pointcloud based on the CityScapes color palette
-    labels = np.array(data['ObjTag'])
+    labels = data['ObjTag']
     int_color = LABEL_COLORS[labels]
 
-
     # Assign unique colors based on actor ID
-    for actor_id, color in actor_colors.items():
-        int_color[data['ObjIdx'] == actor_id] = color
-
+    unique_actor_ids = np.unique(data['ObjIdx'])
+    for actor_id in unique_actor_ids:
+        if actor_id in actor_colors:
+            int_color[data['ObjIdx'] == actor_id] = actor_colors[actor_id]
 
 
     # Filter out points with the color (0.0, 0.0, 0.0) which correspond to object we don't want in pointcloud.
