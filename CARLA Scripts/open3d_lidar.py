@@ -236,12 +236,9 @@ def main(arg):
                 vis.add_geometry(point_list)
             vis.update_geometry(point_list)
 
-            # Save point cloud as PLY file
-            # ply_file_name = f"frame_{frame:06d}.ply"
-            # o3d.io.write_point_cloud(ply_file_name, point_list)
-
-            # ply_file_name = f"frame_{frame:06d}.ply"
-            # o3d.io.write_point_cloud(ply_file_name, point_list)
+            if arg.record:
+                ply_file_name = f"frame_{frame:06d}.ply"
+                o3d.io.write_point_cloud(ply_file_name, point_list)
 
 
 
@@ -348,6 +345,12 @@ if __name__ == "__main__":
         default=0.0,
         type=float,
         help='offset in the sensor position in the Z-axis in meters (default: 0.0)')
+
+    argparser.add_argument(
+    '--record',
+    action='store_true',
+    help='record the point clouds as PLY files'
+)
     args = argparser.parse_args()
 
     try:
