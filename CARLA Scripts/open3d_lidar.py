@@ -127,8 +127,8 @@ def semantic_lidar_callback(point_cloud, point_list,actor_colors):
 
     # Assign unique colors based on actor ID
     for actor_id, color in actor_colors.items():
-        mask = (labels == 13) | (labels == 14) | (labels == 15) | (labels == 16) | (labels == 17) | (labels == 18)
-        int_color[mask & (data['ObjIdx'] == actor_id)] = color
+        int_color[data['ObjIdx'] == actor_id] = color
+
 
 
     # Filter out points with the color (0.0, 0.0, 0.0) which correspond to object we don't want in pointcloud.
@@ -200,10 +200,10 @@ def main(arg):
 
     # Assign unique colors to each actor ID
     for actor in actors:
-        if 'vehicle' in actor.type_id or 'walker' in actor.type_id:
-            actor_id = actor.id
-            if actor_id not in actor_colors:
-                actor_colors[actor_id] = np.random.random(3)
+
+        actor_id = actor.id
+        if actor_id not in actor_colors:
+            actor_colors[actor_id] = np.random.random(3)
 
     try:
         original_settings = world.get_settings()
