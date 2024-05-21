@@ -322,14 +322,14 @@ if __name__ == "__main__":
         help='lidar\'s channel count (default: 64)')
     argparser.add_argument(
         '--range',
-        default=100.0,
+        default=30.0, # Default value used to be 100
         type=float,
-        help='lidar\'s maximum range in meters (default: 100.0)')
+        help='lidar\'s maximum range in meters (default: 30.0)')
     argparser.add_argument(
         '--points-per-second',
-        default=500000,
+        default=400000, # Default value used to be 500k
         type=int,
-        help='lidar\'s points per second (default: 500000)')
+        help='lidar\'s points per second (default: 400000)')
     argparser.add_argument(
         '-x',
         default=0.0,
