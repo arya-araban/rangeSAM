@@ -353,7 +353,7 @@ if __name__ == "__main__":
         help='lidar\'s maximum range in meters (default: 30.0)')
     argparser.add_argument(
         '--points-per-second',
-        default=400000, # Default value used to be 500k
+        default=500000, # Default value used to be 500k
         type=int,
         help='lidar\'s points per second (default: 400000)')
     argparser.add_argument(
