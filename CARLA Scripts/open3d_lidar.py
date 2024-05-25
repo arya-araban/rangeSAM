@@ -252,15 +252,20 @@ def main(arg):
 
         frame = 0
         dt0 = datetime.now()
+
+        if arg.record: # Make the point cloud recording folder if we plan to record
+            recording_folder = os.path.join("recordings", dt0.strftime("%Y%m%d_%H%M%S"))
+            os.makedirs(recording_folder, exist_ok=True)
+
+
         while True:
             if frame == 2:
                 vis.add_geometry(point_list)
             vis.update_geometry(point_list)
 
             if arg.record:
-                ply_file_name = f"frame_{frame:06d}.ply"
+                ply_file_name = os.path.join(recording_folder, f"frame_{frame:06d}.ply")
                 o3d.io.write_point_cloud(ply_file_name, point_list)
-
 
 
             vis.poll_events()
