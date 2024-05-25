@@ -200,7 +200,6 @@ def main(arg):
 
     # Assign unique colors to each actor ID
     for actor in actors:
-
         actor_id = actor.id
         if actor_id not in actor_colors:
             actor_colors[actor_id] = np.random.random(3)
