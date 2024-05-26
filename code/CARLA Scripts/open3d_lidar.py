@@ -258,7 +258,7 @@ def main(arg):
         dt0 = datetime.now()
 
         if arg.record: # Make the point cloud recording folder if we plan to record
-            recording_folder = os.path.join("recordings", dt0.strftime("%Y%m%d_%H%M%S"))
+            recording_folder = os.path.join("recordings", str(int(time.time())))
             os.makedirs(recording_folder, exist_ok=True)
 
 
