@@ -29,6 +29,8 @@ except IndexError:
 
 import carla
 
+POINT_DIFF_THRESHOLD = 100  # FOR RECORDING. Difference in number of points from prev point cloud to capture.
+
 VIRIDIS = np.array(cm.get_cmap('plasma').colors)
 VID_RANGE = np.linspace(0.0, 1.0, VIRIDIS.shape[0])
 LABEL_COLORS = np.array([
@@ -195,6 +197,8 @@ def main(arg):
     actors = world.get_actors()
     # print(actors)
 
+    previous_num_points = None
+
     # Create a dictionary to store unique colors for each actor ID
     actor_colors = {}
 
@@ -263,10 +267,19 @@ def main(arg):
                 vis.add_geometry(point_list)
             vis.update_geometry(point_list)
 
-            if arg.record:
-                ply_file_name = os.path.join(recording_folder, f"frame_{frame:06d}.ply")
-                o3d.io.write_point_cloud(ply_file_name, point_list)
 
+
+            if arg.record:
+
+                # Check if the number of points has changed significantly
+                current_num_points = len(point_list.points)
+                if previous_num_points is None or abs(current_num_points - previous_num_points) > POINT_DIFF_THRESHOLD:
+
+                    # Record the point cloud
+                    ply_file_name = os.path.join(recording_folder, f"frame_{frame:06d}.ply")
+                    o3d.io.write_point_cloud(ply_file_name, point_list)
+
+                    previous_num_points = current_num_points
 
             vis.poll_events()
             vis.update_renderer()
