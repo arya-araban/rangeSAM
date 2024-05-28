@@ -29,7 +29,7 @@ except IndexError:
 
 import carla
 
-POINT_DIFF_THRESHOLD = 100  # FOR RECORDING. Difference in number of points from prev point cloud to capture.
+POINT_DIFF_THRESHOLD = 125  # FOR RECORDING ~ Difference in number of points from prev point cloud to capture.
 
 VIRIDIS = np.array(cm.get_cmap('plasma').colors)
 VID_RANGE = np.linspace(0.0, 1.0, VIRIDIS.shape[0])
@@ -262,11 +262,12 @@ def main(arg):
             os.makedirs(recording_folder, exist_ok=True)
 
 
+
         while True:
             if frame == 2:
                 vis.add_geometry(point_list)
             vis.update_geometry(point_list)
-
+            print(f"~~~~{frame}")
 
 
             if arg.record:
