@@ -14,7 +14,7 @@ def save_point_cloud_with_centroids(file_path, points, centroids):
     pcd.points = o3d.utility.Vector3dVector(points)
 
     # Assign a default color to the original points
-    default_color = [0, 0, 0]  # black
+    default_color = [1, 1, 1]  # white
     pcd.paint_uniform_color(default_color)
 
     # Create a new point cloud for centroids
