@@ -1,8 +1,19 @@
 import open3d as o3d
 import numpy as np
 import os
+from tkinter import Tk
+from tkinter.filedialog import askdirectory
 
-def separate_colors(input_folder):
+def separate_colors(input_folder=None):
+    # If no input folder is specified, open a dialog to select a folder
+    if input_folder is None:
+        root = Tk()
+        root.withdraw()  # Hide the root window
+        input_folder = askdirectory(title="Select Folder Containing PLY Files")
+        if not input_folder:  # If no folder is selected, exit the function
+            print("No folder selected. Exiting...")
+            return
+
     # Ensure the input folder exists
     if not os.path.isdir(input_folder):
         raise ValueError(f"Input folder {input_folder} does not exist.")
@@ -51,6 +62,7 @@ def separate_colors(input_folder):
             o3d.io.write_point_cloud(output_file, point_cloud)
 
 if __name__ == "__main__":
-    # Example usage
-    input_folder = "/home/Arya/Work/PointSAM/code/CARLA Scripts/recordings/1716730729"
-    separate_colors(input_folder)
+    # Example usage with an optional input folder
+    input_folder = None
+    #input_folder = "/home/Arya/Work/PointSAM/code/CARLA Scripts/recordings/1716730729"
+    separate_colors(input_folder if input_folder else None)
