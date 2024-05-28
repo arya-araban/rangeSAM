@@ -53,6 +53,7 @@ def main(file_path, output_file_path=None, visualize=False, bandwidth=1.0):
         save_point_cloud_with_centroids(output_file_path, point_cloud, centroids)
         print(f"Centroids visualization saved to {output_file_path}")
 
+
 if __name__ == "__main__":
     import argparse
 
