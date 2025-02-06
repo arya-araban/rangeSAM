@@ -1,1 +1,1 @@
-# PointSAM
+# RangeSAM
