@@ -1,8 +1,0 @@
-numpy
-einops
-scipy
-pyyaml
-tensorboardX
-prettytable
-timm
-nuscenes-devkit
