@@ -1,0 +1,84 @@
+# RangeSAM trained on SemanticKITTI
+id: 'semantic_kitti'
+dataset: 'SemanticKitti'
+
+# Sequences of dataset/sequences
+split:
+  train: [0, 1, 2, 3, 4, 5, 6, 7, 9]
+  valid: [8]
+  test: [10]
+
+# Training
+n_classes: 2                # foreground + background
+n_epochs: 50
+warmup_epochs: 10
+batch_size: 8
+lr: 0.0004
+weight_decay: 0.01
+grad_clipping: 4
+val_frequency: 1
+num_fg_points: [1, 12]      # foreground clicks sampled per training example
+num_bg_points: [0, 8]       # background clicks sampled per training example
+
+# Loss weights
+focal_weight: 20.0
+dice_weight: 1.0
+prompt_weight: 0.3
+
+# Model
+vit_backbone: 'vit_small_patch16_384'   # ViT-S/16 encoder
+in_channels: 5                          # range, x, y, z, intensity
+patch_size: [2, 8]
+patch_stride: [2, 8]
+image_size: [64, 384]                   # range image crop (H, W) around the selected instance
+conv_stem: 'ConvStem'
+stem_base_channels: 32
+D_h: 128                                # hidden dim of the stem and decoder
+skip_filters: 128                       # skip connection stem -> decoder (0 or D_h)
+reuse_pos_emb: true                     # reuse the positional embeddings of the pre-trained ViT
+
+# Prompt encoder and two-way transformer
+prompt_embed_dim: 128
+transformer_depth: 3
+num_heads: 8
+mlp_dim: 2048
+
+# RangeSAM components (set to false for ablations)
+label_enforcement: true
+learnable_prompt_scale: true
+use_prompt_loss: true
+
+# Point cloud augmentation (training only)
+augmentation:
+  p_flipx: 0.
+  p_flipy: 0.5
+  p_transx: 0.5
+  trans_xmin: -5
+  trans_xmax: 5
+  p_transy: 0.5
+  trans_ymin: -3
+  trans_ymax: 3
+  p_transz: 0.5
+  trans_zmin: -1
+  trans_zmax: 0.
+  p_rot_roll: 0.5
+  rot_rollmin: -5
+  rot_rollmax: 5
+  p_rot_pitch: 0.5
+  rot_pitchmin: -5
+  rot_pitchmax: 5
+  p_rot_yaw: 0.5
+  rot_yawmin: -5
+  rot_yawmax: 5
+
+# Range projection (64 x 2048)
+sensor:
+  scan_proj: true       # true: rows from the laser ring order, false: from the vertical angle
+  proj_h: 64
+  proj_w: 2048
+  fov_up: 3.0
+  fov_down: -25.0
+  fov_left: -180
+  fov_right: 180
+  img_mean: [12.12, 10.88, 0.23, -1.04, 0.21]
+  img_stds: [12.32, 11.47, 6.91, 0.86, 0.16]

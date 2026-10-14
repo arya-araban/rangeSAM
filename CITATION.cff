@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "RangeSAM: Promptable Segmentation of Sparse 3D Point Clouds in Outdoor Driving Scenes"
+authors:
+  - family-names: Araban
+    given-names: Arya
+year: 2025
+doi: 10.5281/zenodo.18012998
+url: "https://doi.org/10.5281/zenodo.18012998"
+preferred-citation:
+  type: generic
+  title: "RangeSAM: Promptable Segmentation of Sparse 3D Point Clouds in Outdoor Driving Scenes"
+  authors:
+    - family-names: Araban
+      given-names: Arya
+  year: 2025
+  publisher:
+    name: Zenodo
+  doi: 10.5281/zenodo.18012998
+  url: "https://doi.org/10.5281/zenodo.18012998"

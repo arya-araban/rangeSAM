@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+venv/
+
+# Datasets, checkpoints and logs
+*.pth
+*.pt
+*.npz
+logs/
+runs/
