@@ -6,8 +6,6 @@
 
 RangeSAM is a novel architecture designed for 3D promptable point cloud segmentation, specifically tailored to address the challenges of sparse LiDAR data in outdoor driving scenes. By integrating range-based processing techniques with transformer architectures from state-of-the-art 2D promptable segmentation models, RangeSAM effectively handles sparse and irregular LiDAR data while maintaining high segmentation fidelity.
 
-The thesis is available in [`research/Thesis.pdf`](research/Thesis.pdf) and on [Zenodo](https://zenodo.org/records/18012998).
-
 ## Overview
 
 Given a LiDAR scan and a few point prompts (foreground and background clicks), RangeSAM segments the indicated object.
